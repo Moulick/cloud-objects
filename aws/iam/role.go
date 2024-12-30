@@ -33,16 +33,28 @@ func createRole(svc iamiface.IAMAPI, rn string, roleDesc string, sessionDuration
 	return result, nil
 }
 
-func updateRole(svc iamiface.IAMAPI, roleArn awsarn.ARN, roleDesc string) (*awsiam.UpdateRoleOutput, error) {
+func updateRole(svc iamiface.IAMAPI, roleArn awsarn.ARN, roleDesc string, pd PolicyDocument) (*awsiam.UpdateRoleOutput, error) {
 
 	result, err := svc.UpdateRole(&awsiam.UpdateRoleInput{
-		Description: awssdk.String(roleDesc),
 		RoleName:    awssdk.String(FriendlyNamefromARN(roleArn)),
+		Description: awssdk.String(roleDesc),
 	})
 	if err != nil {
 		return nil, err
 	}
+	// Update AssumeRolePolicy
+	b, err := json.Marshal(&pd)
+	if err != nil {
+		return nil, err
+	}
 
+	_, err = svc.UpdateAssumeRolePolicy(&awsiam.UpdateAssumeRolePolicyInput{
+		RoleName:       awssdk.String(FriendlyNamefromARN(roleArn)),
+		PolicyDocument: awssdk.String(string(b)),
+	})
+	if err != nil {
+		return nil, err
+	}
 	return result, nil
 }
 
@@ -74,6 +86,20 @@ func getRole(svc iamiface.IAMAPI, roleArn awsarn.ARN) (*awsiam.GetRoleOutput, er
 	return result, nil
 }
 
+func getRoleByName(roleName string, svc iamiface.IAMAPI) (*awsiam.GetRoleOutput, error) {
+
+	result, err := svc.GetRole(&awsiam.GetRoleInput{
+		RoleName: awssdk.String(roleName),
+	})
+
+	if err != nil {
+		fmt.Println("Error", err)
+		return nil, err
+	}
+
+	return result, nil
+}
+
 type RoleInstance struct {
 	Name               string
 	Description        string
@@ -83,7 +109,12 @@ type RoleInstance struct {
 }
 
 func NewRoleInstance(name string, description string, sessionDuration int64, poldoc PolicyDocument) *RoleInstance {
-	return &RoleInstance{Name: name, Description: description, MaxSessionDuration: sessionDuration, PolicyDocument: poldoc}
+	return &RoleInstance{
+		Name:               name,
+		Description:        description,
+		PolicyDocument:     poldoc,
+		MaxSessionDuration: sessionDuration,
+	}
 }
 
 func NewExistingRoleInstance(name string, description string, sessionDuration int64, poldoc PolicyDocument, arn awsarn.ARN) *RoleInstance {
@@ -142,12 +173,28 @@ func (r *RoleInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
+func (r *RoleInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+	roleout, err := getRoleByName(roleName, svc)
+	if err != nil {
+		return err
+	}
+	arns, err := aws.ARNify(awssdk.StringValue(roleout.Role.Arn))
+	if err != nil {
+		return err
+	}
+	r.arn = arns[0]
+	r.Description = *roleout.Role.Description
+	r.MaxSessionDuration = *roleout.Role.MaxSessionDuration
+	r.Name = *roleout.Role.RoleName
+	return nil
+}
+
 func (r *RoleInstance) Update(svc iamiface.IAMAPI) error {
 	if !r.IsCreated(svc) {
 		return aws.NewInstanceNotYetCreatedError(fmt.Sprintf("Role '%s' not yet created", r.Name))
 	}
 
-	_, err := updateRole(svc, r.arn, r.Description)
+	_, err := updateRole(svc, r.arn, r.Description, r.PolicyDocument)
 	if err != nil {
 		return err
 	}

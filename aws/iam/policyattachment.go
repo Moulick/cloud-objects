@@ -144,6 +144,11 @@ func (pa *PolicyAttachmentInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
+func (pa *PolicyAttachmentInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+	panic("Implement me")
+	return nil
+}
+
 // Update for PolicyAttachmentInstance doesn't do anything
 func (pa *PolicyAttachmentInstance) Update(svc iamiface.IAMAPI) error {
 	// PolicyAttachment not updateable
