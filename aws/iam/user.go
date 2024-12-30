@@ -221,6 +221,11 @@ func (u *UserInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
+func (u *UserInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+	panic("Implement me")
+	return nil
+}
+
 func (u *UserInstance) Update(svc iamiface.IAMAPI) error {
 	if !u.IsCreated(svc) {
 		return aws.NewInstanceNotYetCreatedError(fmt.Sprintf("User '%s' not yet created", u.Name))

@@ -123,7 +123,7 @@ func NewExistingGroupInstance(name string, arn awsarn.ARN) *GroupInstance {
 	}
 }
 
-// Reconcile creates or updates an AWS Group
+// Create an AWS Group
 func (g *GroupInstance) Create(svc iamiface.IAMAPI) error {
 	var newarn awsarn.ARN
 	out, err := createGroup(svc, g.Name)
@@ -135,6 +135,11 @@ func (g *GroupInstance) Create(svc iamiface.IAMAPI) error {
 		return err
 	}
 	g.arn = newarn
+	return nil
+}
+
+func (g *GroupInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+	panic("Implement me")
 	return nil
 }
 

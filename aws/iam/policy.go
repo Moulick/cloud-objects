@@ -176,6 +176,11 @@ func (p *PolicyInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
+func (p *PolicyInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+	panic("Implement me")
+	return nil
+}
+
 // Update for PolicyInstance creates a new Policy version an sets it as active; then returns the arn
 func (p *PolicyInstance) Update(svc iamiface.IAMAPI) error {
 	if !p.IsCreated(svc) {
