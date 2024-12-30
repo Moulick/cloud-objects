@@ -79,7 +79,6 @@ func getRole(svc iamiface.IAMAPI, roleArn awsarn.ARN) (*awsiam.GetRoleOutput, er
 	})
 
 	if err != nil {
-		fmt.Println("Error", err)
 		return nil, err
 	}
 
@@ -93,7 +92,6 @@ func getRoleByName(roleName string, svc iamiface.IAMAPI) (*awsiam.GetRoleOutput,
 	})
 
 	if err != nil {
-		fmt.Println("Error", err)
 		return nil, err
 	}
 

@@ -91,7 +91,6 @@ func getPolicy(svc iamiface.IAMAPI, arn awsarn.ARN) (*iam.GetPolicyOutput, error
 	})
 
 	if err != nil {
-		fmt.Println("Error", err)
 		return nil, err
 	}
 
@@ -106,7 +105,6 @@ func getPolicyVersion(svc iamiface.IAMAPI, po iam.GetPolicyOutput) (*iam.GetPoli
 	})
 
 	if err != nil {
-		fmt.Println("Error", err)
 		return nil, err
 	}
 

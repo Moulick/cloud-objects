@@ -127,7 +127,6 @@ func getUser(svc iamiface.IAMAPI, userArn awsarn.ARN) (*awsiam.GetUserOutput, er
 	})
 
 	if err != nil {
-		fmt.Println("Error", err)
 		return nil, err
 	}
 

@@ -76,7 +76,6 @@ func getGroup(svc iamiface.IAMAPI, groupArn awsarn.ARN) (*awsiam.GetGroupOutput,
 	})
 
 	if err != nil {
-		fmt.Println("Error", err)
 		return nil, err
 	}
 
