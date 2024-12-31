@@ -181,9 +181,13 @@ func (r *RoleInstance) Read(svc iamiface.IAMAPI) error {
 		return err
 	}
 	r.arn = arns[0]
-	r.Description = *roleout.Role.Description
-	r.MaxSessionDuration = *roleout.Role.MaxSessionDuration
-	r.Name = *roleout.Role.RoleName
+	if roleout.Role.Description != nil {
+		r.Description = *roleout.Role.Description
+	}
+	if roleout.Role.MaxSessionDuration != nil {
+		r.MaxSessionDuration = *roleout.Role.MaxSessionDuration
+	}
+
 	return nil
 }
 
