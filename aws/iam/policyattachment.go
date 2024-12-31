@@ -144,7 +144,7 @@ func (pa *PolicyAttachmentInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
-func (pa *PolicyAttachmentInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+func (pa *PolicyAttachmentInstance) Read(svc iamiface.IAMAPI) error {
 	panic("Implement me")
 	return nil
 }

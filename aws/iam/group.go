@@ -137,7 +137,7 @@ func (g *GroupInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
-func (g *GroupInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+func (g *GroupInstance) Read(svc iamiface.IAMAPI) error {
 	panic("Implement me")
 	return nil
 }

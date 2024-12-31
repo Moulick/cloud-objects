@@ -14,7 +14,7 @@ import (
 
 type Instance interface {
 	Create(svc iamiface.IAMAPI) error
-	Read(name string, svc iamiface.IAMAPI) error
+	Read(svc iamiface.IAMAPI) error
 	Update(svc iamiface.IAMAPI) error
 	Delete(svc iamiface.IAMAPI) error
 	ARN() awsarn.ARN

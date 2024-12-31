@@ -171,8 +171,8 @@ func (r *RoleInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
-func (r *RoleInstance) Read(roleName string, svc iamiface.IAMAPI) error {
-	roleout, err := getRoleByName(roleName, svc)
+func (r *RoleInstance) Read(svc iamiface.IAMAPI) error {
+	roleout, err := getRoleByName(r.Name, svc)
 	if err != nil {
 		return err
 	}

@@ -220,7 +220,7 @@ func (u *UserInstance) Create(svc iamiface.IAMAPI) error {
 	return nil
 }
 
-func (u *UserInstance) Read(roleName string, svc iamiface.IAMAPI) error {
+func (u *UserInstance) Read(svc iamiface.IAMAPI) error {
 	panic("Implement me")
 	return nil
 }
