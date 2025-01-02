@@ -146,7 +146,6 @@ func (pa *PolicyAttachmentInstance) Create(svc iamiface.IAMAPI) error {
 
 func (pa *PolicyAttachmentInstance) Read(svc iamiface.IAMAPI) error {
 	panic("Implement me")
-	return nil
 }
 
 // Update for PolicyAttachmentInstance doesn't do anything

@@ -222,7 +222,6 @@ func (u *UserInstance) Create(svc iamiface.IAMAPI) error {
 
 func (u *UserInstance) Read(svc iamiface.IAMAPI) error {
 	panic("Implement me")
-	return nil
 }
 
 func (u *UserInstance) Update(svc iamiface.IAMAPI) error {

@@ -139,7 +139,6 @@ func (g *GroupInstance) Create(svc iamiface.IAMAPI) error {
 
 func (g *GroupInstance) Read(svc iamiface.IAMAPI) error {
 	panic("Implement me")
-	return nil
 }
 
 func (g *GroupInstance) Update(svc iamiface.IAMAPI) error {

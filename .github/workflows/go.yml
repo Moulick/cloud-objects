@@ -2,9 +2,14 @@ name: Go
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
+      - main
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
+      - main
+  workflow_dispatch:
 
 jobs:
 
@@ -13,19 +18,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Set up Go 1.13
-      uses: actions/setup-go@v1
-      with:
-        go-version: 1.13
-      id: go
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: 'go.mod'
+          check-latest: true
+          cache: true
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v2
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v4
 
-    - name: Get dependencies
-      run: |
-        go get -v -t -d ./...
-        go mod download
-            
-    - name: Test
-      run: make test
+      - name: Get dependencies
+        run: |
+          go mod download -x && go mod tidy -x
+
+      - name: Check go mod tidy
+        run: git diff --exit-code go.mod go.sum
+
+      - name: Build
+        run: make fmt vet build
+
+      - name: Test
+        run: make test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          files: cover.out
