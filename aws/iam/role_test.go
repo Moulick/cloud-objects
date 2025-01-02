@@ -49,6 +49,14 @@ func (m *mockIAMClient) UpdateRole(input *awsiam.UpdateRoleInput) (*awsiam.Updat
 	return &awsiam.UpdateRoleOutput{}, nil
 }
 
+func (m *mockIAMClient) UpdateAssumeRolePolicy(input *awsiam.UpdateAssumeRolePolicyInput) (*awsiam.UpdateAssumeRolePolicyOutput, error) {
+
+	// Check if input values are still as we want them to be
+	assert.Equal(m.t, getReferenceUpdateAssumeRolePolicyInput(), input)
+
+	return &awsiam.UpdateAssumeRolePolicyOutput{}, nil
+}
+
 func (m *mockIAMClient) DeleteRole(input *awsiam.DeleteRoleInput) (*awsiam.DeleteRoleOutput, error) {
 	// Check if input values are still as we want them to be
 	assert.Equal(m.t, awssdk.String(ReferenceExistingRoleName), input.RoleName)
@@ -211,6 +219,13 @@ func getReferenceUpdateRoleInput() *awsiam.UpdateRoleInput {
 	return &awsiam.UpdateRoleInput{
 		Description: awssdk.String(ReferenceRoleDescription),
 		RoleName:    awssdk.String(ReferenceExistingRoleName),
+	}
+}
+
+func getReferenceUpdateAssumeRolePolicyInput() *awsiam.UpdateAssumeRolePolicyInput {
+	return &awsiam.UpdateAssumeRolePolicyInput{
+		RoleName:       awssdk.String(ReferenceExistingRoleName),
+		PolicyDocument: awssdk.String(string(getMarshaledReferencePolicyDocument())),
 	}
 }
 
